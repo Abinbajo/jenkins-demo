@@ -2,7 +2,8 @@ pipeline {
     agent any
 
     stages {
-        stage('Setup Virtualenv') {
+
+        stage('Setup Virtual Environment') {
             steps {
                 sh '''
                 python3 -m venv venv
