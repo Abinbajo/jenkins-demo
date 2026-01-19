@@ -2,15 +2,23 @@ pipeline {
     agent any
 
     stages {
-        stage('Install Dependencies') {
+        stage('Setup Virtualenv') {
             steps {
-                sh 'pip3 install pytest'
+                sh '''
+                python3 -m venv venv
+                . venv/bin/activate
+                pip install --upgrade pip
+                pip install pytest
+                '''
             }
         }
 
         stage('Run Tests') {
             steps {
-                sh 'pytest'
+                sh '''
+                . venv/bin/activate
+                pytest
+                '''
             }
         }
     }
