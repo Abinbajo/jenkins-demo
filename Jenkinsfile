@@ -1,24 +1,27 @@
 pipeline {
-  agent any
+    agent any
 
-  stages {
-    stage('Build Image') {
-      steps {
-        sh 'docker build -t simple-flask:latest .'
-      }
-    }
+    stages {
+        stage('Build Image') {
+            steps {
+                sh 'docker build -t jenkins-flask-app:1.0 .'
+            }
+        }
 
-    stage('Run Container') {
-      steps {
-        sh '''
-          docker rm -f simple-flask || true
-          docker run -d \
-            --name simple-flask \
-            -p 5000:5000 \
-            simple-flask:latest
-        '''
-      }
+        stage('Load Image into Kind') {
+            steps {
+                sh 'kind load docker-image jenkins-flask-app:1.0'
+            }
+        }
+
+        stage('Deploy to Kubernetes') {
+            steps {
+                sh '''
+                kubectl apply -f deployment.yaml
+                kubectl apply -f service.yaml
+                '''
+            }
+        }
     }
-  }
 }
 

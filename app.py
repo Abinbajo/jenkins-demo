@@ -1,15 +1,10 @@
-from flask import Flask, jsonify
+from flask import Flask
 
 app = Flask(__name__)
 
 @app.route("/")
-def home():
-    return jsonify(message="Hello from Jenkins-deployed Flask app")
-
-@app.route("/add/<int:a>/<int:b>")
-def add(a, b):
-    return jsonify(result=a + b)
+def hello():
+    return "Hello from Jenkins + Docker!"
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
-
